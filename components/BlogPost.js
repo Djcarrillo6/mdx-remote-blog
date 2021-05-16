@@ -1,8 +1,8 @@
-  
-import React from 'react'
+  import React from 'react'
 import NextLink from 'next/link'
 import { useColorMode, Heading, Text, Flex, Box, Link } from '@chakra-ui/react'
 import { parseISO, format } from 'date-fns'
+import Comments from '../components/Comments'
 
 const BlogPost = ({ title, publishedAt, summary, slug }) => {
     const { colorMode } = useColorMode()
@@ -38,6 +38,7 @@ const BlogPost = ({ title, publishedAt, summary, slug }) => {
 
                     </Flex>
                     <Text color={secondaryTextColor[colorMode]}>{summary}</Text>
+                    <Comments />
                 </Box>
             </Link>
         </NextLink>

@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router'
 
 import Container from '../components/Container'
+import Comments from '../components/Comments'
 
 export default function BlogLayout({ children, frontMatter }) {
     const { colorMode } = useColorMode()
@@ -74,6 +75,7 @@ export default function BlogLayout({ children, frontMatter }) {
                 </Flex>
                 {children}
             </Stack>
+            <Comments />
         </Container>
     )
 }

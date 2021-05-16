@@ -33,3 +33,5 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Test Env CSS file
+/styles/styles.css

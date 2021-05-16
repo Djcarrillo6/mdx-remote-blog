@@ -28,7 +28,7 @@ const GlobalStyle = ({ children }) => {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background: ${colorMode === 'light' ? 'white' : '#171717'};
+            background: ${colorMode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(63, 62, 62)'};
           }
         `}
       />

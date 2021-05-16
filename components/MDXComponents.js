@@ -134,4 +134,4 @@ const MDXComponents = {
 }
 
 export { CustomLink }
-export default MDXComponents
+export default MDXComponents;

@@ -14,13 +14,13 @@ const Container = ({ children }) => {
     const { colorMode } = useColorMode()
 
     const bgColor = {
-        light: 'white',
-        dark: '#171717'
+        light: 'rgb(255, 255, 255)',
+        dark: 'rgb(63, 62, 62)'
     }
 
     const color = {
-        light: 'black',
-        dark: 'white'
+        light: 'rgb(63, 62, 62)', // set to 'dark' color val
+        dark: 'rgb(255, 255, 255)' // set to 'light' color val
     }
 
     const navHoverBg = {
@@ -59,9 +59,14 @@ const Container = ({ children }) => {
                             Home
                         </Button>
                     </NextLink>
-                    <NextLink href="/blog" passHref>
+                    <NextLink href="https://www.djwebdev.io" passHref>
                         <Button as="a" variant="ghost" p={[1, 2, 4]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
                             Blog
+                        </Button>
+                    </NextLink>
+                    <NextLink href="/blog" passHref>
+                        <Button as="a" variant="ghost" p={[1, 2, 4]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
+                            Portfolio
                         </Button>
                     </NextLink>
                 </Box>
