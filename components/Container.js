@@ -19,8 +19,8 @@ const Container = ({ children }) => {
     }
 
     const color = {
-        light: 'rgb(63, 62, 62)', // set to 'dark' color val
-        dark: 'rgb(255, 255, 255)' // set to 'light' color val
+        light: 'rgb(63, 62, 62)', // set to 'dark' color value
+        dark: 'rgb(255, 255, 255)' // set to 'light' color value
     }
 
     const navHoverBg = {
