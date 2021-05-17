@@ -14,7 +14,7 @@ export default function Index() {
   const { colorMode } = useColorMode()
   const colorSecondary = {
     light: 'gray.700',
-    dark: 'gray.400'
+    dark: 'gray.100'
   }
   return (
     <Container>
@@ -37,7 +37,7 @@ export default function Index() {
           maxWidth="700px"
         >
           <Heading mb={2}>Hi, I'm DJ Carrillo</Heading>
-          <Text color={colorSecondary[colorMode]}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ante nunc, finibus sit amet purus quis, congue vulputate ipsum. Phasellus lobortis bibendum orci, quis imperdiet lectus imperdiet porttitor.</Text>
+          <Text color={colorSecondary[colorMode]}>This is my technical blog, where I will periodically post technical articles, tutorials, and other general web & mobile application development topics. I am currently in the process of drafting mutliple articles, so please check back soon!!!</Text>
         </Flex>
       </Stack>
     </Container>
