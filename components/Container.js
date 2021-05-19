@@ -59,12 +59,12 @@ const Container = ({ children }) => {
                             Home
                         </Button>
                     </NextLink>
-                    <NextLink href="https://www.djwebdev.io" passHref>
+                    <NextLink href="/blog" passHref>
                         <Button as="a" variant="ghost" p={[1, 2, 4]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
                             Blog
                         </Button>
                     </NextLink>
-                    <NextLink href="/blog" passHref>
+                    <NextLink href="https://www.djwebdev.io" passHref>
                         <Button as="a" variant="ghost" p={[1, 2, 4]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
                             Portfolio
                         </Button>
