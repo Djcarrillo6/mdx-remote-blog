@@ -6,9 +6,7 @@ import {
   Flex,
   Stack
 } from '@chakra-ui/react'
-
 import Container from '../components/Container'
-
 
 export default function Index() {
   const { colorMode } = useColorMode()

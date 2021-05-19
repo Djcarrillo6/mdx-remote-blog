@@ -1,0 +1,158 @@
+---
+title: 'Nextjs & Data Fetching Strategies'
+publishedAt: '2021-05-19'
+summary: 'Next.js is a hybrid framework, allowing you to choose your data fetching strategy on a per-page/component basis. This post will breakdown the 4 options that are currently available.'
+---
+
+# The 4 Options for Data Fetching in Next.js 
+  Next.js is a hybrid framework that provides mutilple options for fetching data.  In this blog post, I will break down the 4 options that developers can consider, when they are deciding which of the options would provide the best UI/UX for the client-side user.  The four options for data-fetching in a Next.js application are:
+  1. CSR - Client Side Rendering
+  2. SSR - Sever Side Rendering
+  3. SSG - Static Site Generation
+  4. ISR - Incremental Static Regeneration
+
+
+# Next.js Data Fetching Methods
+- In a basic React.js application, there is no pre-rendering; meaning that, when the browser makes the initial load of the React app, nothing is rendered on the screen.  This is can go unnoticed by a casual user of your application, but when a blank screen displayed on their browser window, it usually means the application's React components have not been initialized yet, and are waiting on the JS to be loaded.
+  - If you are tring to visit a React application that has a very large bundle, and your user has very slow internet connectivity, this is very likely going to result in a blank white screen being the first thing that a user sees when using your application.
+  - Afer the JS loads, the React components become initialized, and the page becomes interactive. 
+
+- In Next.js, on the initial load of the application bundle, the `pre-rendered` HTML is displayed first; By using `pre-rendered` HTML, the application's "time to first byte"(TTFB), will be much quicker, leading to both better performance and better Core Web Vitals(a strong factor that will be used in Google Analytics Site Rankings algorithm).
+
+# CSR - Client Side Rendering 
+- Client-Side Rendering (CSR) is a method for pre-rendering mechanisms. It’s a way of fetching data in React and is explicitly independant from Next.js. It can be useful to render dynamic pages when performance and SEO aren’t the key areas of concern.
+
+# SSR - Sever Side Rednering
+- Server-Side Rendering (SSR) is a method used to render pages with dynamic content. The page is generated on demand, in runtime phase. Because the process is happening on every  request, Time-To-First-Byte (TTFB) is much slower than statically generated sites (SSG).
+- The HTML is generated on each request, and if a component has dynamic data, SSR can generate and render the HTML first, while the component waits to be injected with the data that has been requested. 
+
+The `getServerSideProps` Funtion:
+- Next.js uses getServerSideProps() to fetch a dynamic data and to pass it to a page as a props.
+
+```javascript:pages/index.js  
+
+function Home({ products }) {
+  return (
+    <ul>{
+      products.map((product) => (
+        <li>{product.title}</li>
+      ))
+    }</ul>
+  )
+};
+
+export async function getServerSideProps(context) {
+  const result = await fetch(`https://.../products`);
+  const data = await res.json();
+
+  return {
+    props: {
+      products: data.products
+    }
+  };
+};
+```
+
+# SSG - Static Site Generation
+- The HTML is generated at buid time, and then is reused for each subsequent request.
+  - Anytime a route has initialized it's HTML in response to a first-request, the HTML will be `cached`, and then used each time that route is visited again. 
+
+***Static Generation Without Data***
+- React components that require no external data in order to be generated into static HTML.
+
+***Static Generation With Data***
+- React components that are depending on the data returned from an asynchronous data-fetching function; HTML is generated only after the promise has resolved, and returned the requested data from which ever 3rd party API it had to be fetched from. 
+
+```javascript:Home.js
+function Home({ products }) {
+  return (
+    <ul>{
+      products.map((product) => (
+        <li>{product.title}</li>
+      ))
+    }</ul>
+  )
+};
+
+export async function getStaticProps(context) {
+  const result = await fetch(`https://.../products`);
+  const data = await res.json();
+
+  return {
+    props: {
+      products: data.products
+    }
+  };
+};
+```
+
+# ISR - Incremental Static Regeneration
+- By default, components that are fetching data from an API and then generating HTML are doing so at `build time`; however with `ISR`, we can set a option of `revalidate` in the return of the `getStaticProps` function, and our function will invoke itself repeatedly based on the time based value that was set.
+  - For example, if the `revalidate` key was set to "60 seconds", that would mean that the data that was fetched at build time will rendered on the page only for the first 60 seconds.
+  - At the 60 second mark, the function will call itself again, and the previously cached data will be invalidated, and will be updated with the data from the most recent request made.
+  - This style of data fetching is like a combination of build-time generated static + request-time generated static.
+  - You get the benefits of SSR, without the need to refresh and reload the entire application. 
+
+```javascript:Products.js
+  export async function getStaticProps(context) {
+  const result = await fetch(`https://.../products`);
+  const data = await res.json();
+
+  return {
+    props: {
+      products: data.products
+    },
+    revalidate: 60
+  };
+};
+```
+
+
+# Page Path Depends on External Data 
+- In Next.js, you can pre-render pages with paths that depend on external data. 
+- The `getStaticPaths` function is very similiart to `getStaticProps`, in that a request is made to an API for some data(can even my your local file system).
+  - Then a list of paths is created and made available to the application.
+
+```javascript:pages/posts/[id].js
+
+export async function getStaticPaths() {
+  const result = await fetch(`https://.../posts`);
+  const posts = await res.json();
+
+  const paths = posts.map((post) => ({
+    params: { id: post }
+  }))
+
+  return {
+    paths,
+    fallback: false 
+  };
+};
+```
+
+
+# Static Generation without Data & Fetching Data on the Client-Side 
+- You can also pre-render without data, and then load the data on the client-side.
+- Next.js provides a handy library & React hook called `useSWR`, which allows the pre-rendering of a component, along with some conditional HTML elements, which are displayed during the time in between the data request & the data resolving from that request.
+```javascript:Profile.js
+import useSWR from 'swr';
+
+function Profile() {
+  const { data, error } = useSWR('/api/user', fetcher);
+
+  if(error) return <div>Failed to load!</div>;
+  if(!data) return <div>loading...</div>;
+  return <div>Hello {data.name}!</div>;
+};
+```
+- This hook allows for a low "time to first byte", by pre-rendering some static HTML from the server(just like skeleton states for loading screen UI's), and it makes for a good UX.
+
+## SEO & Next.js
+***Google Page Ranking Factors***
+- Because Next.js is a hybrid framework, we can choose which of the 4 data rendering methods that we want to use; each component could make use of the rendering form that is best for the data/content that it is supposed to display. Since the start of 2021, Google's SEO Page Rankings are highly dependant on your application performance, so choosing when to use certain methods to render your site data is critical to getting a good ranking from Google. 
+- Sever-Side Rendering some of a component's static HTML first(build time), and then make a subsequent client-side data fetching requests, followed by the hydration of that fetched data into the partially SSR rendered component, will make for much faster "time to first byte" scores. 
+
+## Ending Point
+- I have been using Next.js exclusively since January of 2021, and some of the most appealing features of this hyrbid framework are extremely customizable.  Giving the application's developer the flexiblity of choosing which data-fetching method is best for each component, along with the option to render some of a component's HTML elements prior to the data being return from an API request, are what seperate Nextjs from other frameworks. 
+
+***Thanks for reading!***
