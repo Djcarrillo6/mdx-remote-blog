@@ -66,10 +66,10 @@ export default function Blog({ posts }) {
             </Container>
         </>
     )
-}
+};
 
 export async function getStaticProps() {
-    const posts = await getAllFilesFrontMatter('blog')
+    const posts = await getAllFilesFrontMatter('blog');
 
-    return { props: { posts } }
-}
+    return { props: { posts } };
+};
