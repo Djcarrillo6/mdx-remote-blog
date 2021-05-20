@@ -28,7 +28,7 @@ export default function Blog({ posts }) {
     return (
         <>
             <Head>
-                <title>Blog - DJ Carrillo</title>
+                <title>DJWEBDEV - Articles</title>
             </Head>
             <Container>
                 <Stack
@@ -47,7 +47,7 @@ export default function Blog({ posts }) {
                         px={4}
                     >
                         <Heading letterSpacing="tight" mb={4} as="h1" size="2xl">
-                            Blog ({posts.length} posts)
+                            Articles ({posts.length})
                         </Heading>
                         <InputGroup mb={4} mr={4} w="100%">
                             <Input
