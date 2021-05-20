@@ -7,6 +7,12 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import styled from '@emotion/styled'
+import { 
+    FaLinkedin,
+    FaTwitter
+  }  from 'react-icons/fa'
+  import { VscGithub } from "react-icons/vsc";
+  import { IconContext } from "react-icons" 
 
 import DarkModeSwitch from '../components/DarkModeSwitch'
 
@@ -61,7 +67,7 @@ const Container = ({ children }) => {
                     </NextLink>
                     <NextLink href="/blog" passHref>
                         <Button as="a" variant="ghost" p={[1, 2, 4]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
-                            Blog
+                            Articles
                         </Button>
                     </NextLink>
                     <NextLink href="https://www.djwebdev.io" passHref>
@@ -69,6 +75,31 @@ const Container = ({ children }) => {
                             Portfolio
                         </Button>
                     </NextLink>
+                </Box>
+                <Box>
+                    <IconContext.Provider value={{ size: '30px', color: 'darkblue'}} >
+                        <NextLink href="https://www.linkedin.com/in/davidcarrillojr/" passHref>
+                            <Button as="a" p={[1, 2, 4]} mr={[5]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
+                                <FaLinkedin />
+                            </Button>
+                            </NextLink>
+                        </IconContext.Provider>
+
+                        <IconContext.Provider value={{ color: 'rgb(29 161 242)', size: '30px' }} >
+                        <NextLink href="https://twitter.com/Djcarrillo6" passHref>
+                        <Button as="a" p={[1, 2, 4]} mr={[5]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
+                                <FaTwitter />
+                            </Button>
+                        </NextLink>
+                        </IconContext.Provider>
+
+                        <IconContext.Provider value={{ size: '30px', color: 'black' }} >
+                        <NextLink href="https://github.com/Djcarrillo6" passHref>
+                        <Button as="a" p={[1, 2, 4]} mr={[5]} _hover={{ backgroundColor: navHoverBg[colorMode] }}>
+                                <VscGithub />
+                            </Button>
+                        </NextLink>
+                    </IconContext.Provider>
                 </Box>
                 <DarkModeSwitch />
             </StickyNav >

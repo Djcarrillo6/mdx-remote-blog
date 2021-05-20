@@ -38,7 +38,6 @@ const BlogPost = ({ title, publishedAt, summary, slug }) => {
 
                     </Flex>
                     <Text color={secondaryTextColor[colorMode]}>{summary}</Text>
-                    <Comments />
                 </Box>
             </Link>
         </NextLink>
