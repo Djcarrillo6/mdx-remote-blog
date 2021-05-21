@@ -1,0 +1,180 @@
+---
+title: 'Git Basics'
+publishedAt: '2021-05-20'
+summary: 'The basic foundations of the Git version control system, and the most important commands to know.'
+---
+
+## What Exactly is Git?
+- Git is the world's most popular `version control system`(VCS), and `version control` is software that tracks and manages changes to files over time; very similiar to a "memory card" for older video game systems, that were used to saved a user's specific point in time(gameplay).
+- Version control systems generally allow users to revisit earlier versions of the files, compare changes between versions, undo changes, and much more.
+
+## The History of Git 
+- Linus Torvalds was the name of the software engineer who created not only Git, but also Linux!
+  - Linus became frustrated with the indursty's vendor options with respect to maintaining version control of a project, so he developed an open source solution, known today as Git!
+
+## The Basics of Git
+***What is a Git Repo?***
+  - In Git, a `Repo` is a workspace which tracks and managies files within a folder. Anytime we want to use Git with a project, app, etc.., we need to create a new Git repository. There can be as many repos on your local machine as needed, all of them with seperate histories and contents.
+
+***Git Init & Git Status***
+  - The `git status` command will search the current workspace for the `.git` directory, and it will print out in the console, the history of all of the events connected with the repo.
+  - The `git init` command will initialize a Git repository to the current directory. Anytime a new Git repo is needed, the `git init` command is the first command needed to generate the first node of the repo's doubly-linked-list data structure.
+
+***The Comitting Workflow***
+***Working Directory ---> `git add` ---> Staging Area ---> `git commit` ---> Repository***
+
+- After you've made some changes to any number of files on your local Git repo, the next step would be to add which files you would like to include as part of the commit, using the `git add` command.
+  - The `git add` command allows the repo owner to select which files that want to add to the staging area.
+  - If a user wants to add ALL of the changes that have been made, the can use the `git add .` command, which encompasses ALL changes that have been made.
+  - If a user only wants to add specific files to the staging area, then the `git add [FILENAME]` command, will ONLY add the files that have been explicitly passed as parameters to the `git add ` command.
+- Once the changes have been added to the Git "Staging Area", they are then ready to be commited to the repo's history.
+- The `git commit -m ''` command will commit the files that have been set in the "Staging Area".
+  - If a user forgets to add the REQUIRED `-m ''` parameter, which adds a text message to the commit itself, then the VIM editor will open, and require you to add a commit message.
+
+***Atomic Commits***
+- When it's possible, a Git commit should encompass a single feature, change, or fix.  It's conisdered best practice to keep each commit focused on a single thing(the nucleous of the atom).
+- By following this commiting style, it makes it much easier to undo or rollback chnages later on. It also make your project easier to review. 
+
+***Writting Commit Message Tips***
+- The current Git Docs reccomend that when users are writting commit messages, they are written in the present tense & imperative style commit messages.
+
+***Setting VSCode as Default Editor for Git Commits w/o the msg***
+- By default, when a user omits the commit message with the `git commit` command, Git would open VIM, and require the commit message be saved using that editor.
+- By using the command `git config --global core.editor "code --wait"`, you set the default editor for such situations to now be VSCode.
+  - This may also require the setting of `code` as the PATH variable in VSCode, which can be done by the following steps:
+    1. IN VSCode, open the Command Pallete using the `CMD + SHIFT + P` shortcut.
+    2. Form the search box, search the word `code` and select the first option, which sets `code` as the PATH variable needed to open the VSCode Text Editor; it should be the first option under the drop down menu.
+- Upon succesful completion of the Git command & the VSCode command, the default editor will now be VSCode; This also allows for the repo contributors to be able to draft and save longer formed commit messages!    
+
+***Amending Commits***
+- Rather than making a brand new seperate commit to the repository, you can "redo" the previous commit using the `git commit --amend` command.
+  - This will open the latest commit in VSCode through the `COMMIT_EDITMSG` file, and the commit message will be at the top of the file.
+  - If there is a typo in the commit message, it can be corrected in this file, and once the file is saved, the commit is amended with the recent changes.
+  - If a user forgot to add a file to the commit, or added a file erroneously, then the erronoues files can be added/removed from the "Staging Area" again; once the file is saved in the VSCode editor, the commit is amended to be whatever is now included in the "Staging Area".
+
+## Git Branching
+- Branches are absolutely critical to using Git; think of branches as alternate timelines for a project.
+- They enable us to create separate contexts where we can try new things, or even work on multiple ideas in parallel.
+- If changes are made on one specific branch, they do not have any impact on the other branches. 
+- Within a branch, the `HEAD -> master`(similiar to a bookmark in a book) tag references the latest commit, on the current repo; similiar to the `head node` of the doubly-linked list.
+- The `git branch` command will return all of the currently active branches connected to the active repo.
+
+# Git Checkout
+- The `git checkout -b <branch-name>` command will both create a new branch based on the current `HEAD`, as well as switch you over to that newly created branch.
+- The `git checkout <branch-name>` will perform same branch switch as the `git switch <branch-name>` command.
+
+***Creating A Branch***
+- To add a new branch to a repo, use the `git branch <branch-name>` command; this will make a new branch based upon the current `HEAD`.
+  - This just creates the branch, but it does not automatically switch you to that new branch(the `HEAD` stays the same).
+
+***Switching Branches***
+- Once a new branch has been created, you can use the modern `git switch <branch-name>` command to switch to it. 
+
+***How Git Stores HEAD & Branches***
+- The `HEAD` term in Git just refers to a pointer that refers to the current location in your repository; it points to a particular branch reference.
+- By default, the `HEAD` pointer always points to the latest commit on the `master` branch, however we can actually move the `HEAD` pointer, to point to a different commit than the commit it is currently pointing too. 
+
+## Merging Branches
+- Branching makes it super easy to work within self-contained contexts, but often we want to incorporate changes from one branch to another. 
+- There are 2 importat clarifications to declare, which are commonly mixed up:
+  1. The `git merge` command is used to merge branches, NOT specific commits!
+  2. We always merge to the current `HEAD` branch.
+- To merge, follow these basic steps:
+  1. Switch to or checkout the branch you want to merge the changes into(the receiving branch).
+  2. Use the `git merge` command to merge changes from a specific branch, into the current branch you're on. 
+  - There are 2 types of merges, but when another branch has commits that are ahead of the `master` branch, then a `fast-forward` merge just catches the `master` branch up to the latest changes that were merged, by re-assigning it's pointer. 
+
+***Generating Merge Commits***
+- Not all merges are the fast-forward type, rather than performing a simple fast forward, Git performs a `merge commit`, which results in a new commit to the `master` branch; upon this `merge commit`, Git you also prompt you for a new commit message. 
+  - Usually each commit only has 1 parent commit, but with respect to `merge commits`, 2 parents are set to the new commit.
+
+***Resolving Merge Conflicts*** 
+- Clashes when trying to merge two branches, meaning the conflicts need to be manually resolved before the merge can be completed. 
+- When there are conflicts, they will be highlighted with `conflict markers` which are used to signal which branches the of the conflict is occuring.
+  - The content from the branch that you are trying to merge from is displayed between the `==============` and `>>>>>>>>>>>>>>` symbols.
+  - When the conflict is removed, and the file is saved, Git closes the conflict, and merges the changes.
+- Whenever you encounter merge conflicts, follow these steps to resolve them:
+  1. Open up the file(s) with merge conflicts.
+  2. Edit the file(s) to remove the conflicts. Decide which branch's content you want to keep in each conflict; Or keep the content from both.
+  3. Remove the `conflict markers` in the document.
+  4. Add your changes and then make a commit!
+  
+***Using VSCode to Resolve Conflicts***
+- VSCode comes with a specific interface meant to help you facilitate the resolving of conflicts, by clicking on one of the `resolve options` that are displayed in the interface GUI.
+  - VSCode will prompt the following options:
+    1. Accept Current Change
+    2. Accept Incoming Change 
+    3. Accept Both Changes 
+    4. Compare Changes
+
+## Comparisons With Git Diff 
+- We can use the `git diff` command to view changes between commits, branches, files, our working directory, and more!
+- We often use the `git diff` command alongside commands like `git status` and `git log`, to get a better picture of a repository and how it has changed over time. 
+- For each comparison, Git explains which files it is comparing, usually this is 2 versions of the same file. 
+  - Git declares one of the file versions as `A`, and the version as `B`.
+
+## Git Stashing
+- When you make changes to a branch, and then switch to another branch without first commiting those changes, Git will default to one of two options:
+  1. If the un-committed changes would present NO CONFLICTS with the branch you are moving too, then those changes can just be brought along to the destination branch.
+  2. If those un-committed changes would conflict with the branch you are switching too, then Git will not allow the switching of branches, until the un-committed changes are either committed or stashed.
+- Stashing in Git provides an easy way of stashing these uncommitted changes so that we can return to them later, without having to make unnecessary commits. 
+- The `git stash` command will save both staged and unstaged files, and revert the changes in the working copy.
+- The `git stash pop` command removes the most recently stashed changes in your stash, and re-applies them to your working copy.
+- The `git stash apply` command to apply whatever is stashed away, without removing it from the stash. This can be useful if you want to apply stashed changes to multiple branches!
+  - If you run the `git stash apply` command, and there are resulting conflicts from re-itroducing the stash changes into the current branch, then the conflicts would need to be manually resolved, just like in a traditoinal merge conflict resolution. 
+
+***Stashing Multiple Times***
+- You can add mutiple stashes onto the stack of stashes, and they will all be stasged in the order you added them.
+- If there are mutilple stashes, you can view the stash list by using the `git stash list` command.
+- To apply a specific stash to the current branch, you can use the `git stash apply stash@{2}` command, and pass the index of the stash object as the identifier.(LIFO, similiar to a call stack data structure.)
+
+***Dropping Stashes***
+- To delete a particular stash object form the stash-stack, you can use the `git stash drop <stash-idx>` command
+- To completely clear out the stash-stack, you can use the `git stash clear` command to drop the entire stack.
+
+# Undoing Changes & Time Traveling in Git
+- We can use the `git checkout commit <commit-hash>` to view a previous commit. Remeber that when you use the `git log` command to view hashes, and we just need the first 7 digits of a commit hash to target it.
+  - When the above command it used to visit a specific commit hash, Git will warn you with a message about `deatched HEAD`:
+    `You are in 'detached HEAD' state. You can look around, make expieremental changes and commit themm and you can discard commits you make in this state without impacting any branches by switching back to a branch`
+  - Usually, `HEAD` points to a specific branch reference rather than a particular commit.
+    - `HEAD` is a pointer to the current branch reference.
+    - The branch reference is a pointer to the last commit made on a particular branch
+    - So when you time travel to a specific commit hash, you are detaching the `HEAD` from the branch you are coming from, and Git then points that detached `HEAD` to the last commit made on the branch you time traveled too.
+    - When we checkout a particular commit, `HEAD` points at that commit rather than at the branch pointer.
+
+***Re-Attaching A Detached HEAD***
+- When a `HEAD` has been detached, DON"T PANIC; you have a couple options:
+  1. Stay in detached HEAD to examin the contents of the old commit. Poke around, view the files, etc...
+  2. Leave and go back to wherever you were before - reattatch the `HEAD`.
+  3. Create a new branch and switch to it. You can now make and save changes, since `HEAD` is no longer detached.
+
+- To reference a commit hash, relevant to it's distance from `HEAD`, you can use the `git checkout HEAD~<# of commits prior to HEAD>`:
+  - So if you neeed to revert back to the 2nd most recent commit, but you don't have the hash id available, you can use the `git checkout HEAD~2` command, to jumpp back to the 2nd commit prior to the `HEAD` pointer.
+
+***Un-Modifying With Git Restore***
+- The `git restore` command is a new Git command that helps with undoing operations. 
+- The `git restore` was introduced alongside `git switch` as alternatives to some of the uses for `git checkout`.
+- This command can be used to unmodify files; `git restore <file-name>` restores using `HEAD` as the default source, but we can change that using the `--source` option.
+  - For example, `git restore --source HEAD~1 home.html` will restore the contents of `home.html` to it's state from the commit prior to `HEAD`. You can also use a particular commit has as the source. 
+
+***Unstaging Files with Restore***
+- If you have accidentally added a file to your staging area with `git add` and you don't wish to include it in the next commit, you can use `git restore --staged <file-name>` to remove it from staging.
+
+***Git Reset***
+- To undo erroneous commits, you can use the `git reset <commit-hash>` command to reset the repository back to a specific commit.
+- When you reset back to a previous commit, the `git reset` command will revert the commit, but it will not revert the changes that were part of the commit; this command will just forget the commits, but those changes that those commits had, WILL REMAIN in your working directory!
+  - This can be helpful, when you make chages that are needed, but you just committed them to the incorrect branch. By using the reset command, we don't lost tracking of those changes in the working directory, so we can commit the changes to the correct branch; it keeps us from losing our work, even though we dropped thos commits that housed that work.
+- When you want to undo both the commits AND the actual changes in the files, you can use the `--hard` option.
+  - For example, `git reset --hard HEAD~1` OR `git reset --hard <commit-hash>` will delete the last commit and associated changes in the wokring directory.
+
+***Git Revert***
+- The `git revert` command is similiar to the `git reset` command, in that they both "undo" changes, but they accomplish it in different ways.
+- The `git reset` actually moves the branch's pointer backwards, eliminating commits.
+- The `git revert <commit-hash>` instead creates a brand new commit which reverses/undoes the changes from a commit.  Because it results in a new commit, you will be prompted to enter a commit message. 
+
+***Which One Should You Use?***
+- Both `git reset` and `git revert` help us reverse changes, but there is a significant difference when it comes to collaboration.
+- If you want to reverse some commits that other people already have on their own machines, you should use `revert`.
+- If you want to reverse commits that you haven't shared with others, use `reset` and no one will know the difference.
+
+***Thanks for reading!***
