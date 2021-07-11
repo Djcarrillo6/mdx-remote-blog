@@ -30,7 +30,7 @@ export default function Algorithm({ posts }) {
 	return (
 		<>
 			<Head>
-				<title>DJWEBDEV - Algorithm Solution Blog Articles</title>
+				<title>DJWEBDEV - Algorithm Solutions</title>
 			</Head>
 			<Container>
 				<Stack
