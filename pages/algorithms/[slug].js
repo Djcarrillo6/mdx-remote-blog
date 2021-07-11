@@ -3,7 +3,7 @@ import { getFiles, getFileBySlug } from '../../lib/mdx';
 import BlogLayout from '../../layouts/blog';
 import MDXComponents from '../../components/MDXComponents';
 
-export default function Blog({ mdxSource, frontMatter }) {
+export default function AlgoBlog({ mdxSource, frontMatter }) {
 	const content = hydrate(mdxSource, {
 		components: MDXComponents,
 	});
@@ -12,10 +12,10 @@ export default function Blog({ mdxSource, frontMatter }) {
 }
 
 export async function getStaticPaths() {
-	const posts = await getFiles('blog');
+	const algos = await getFiles('algorithms');
 
 	return {
-		paths: posts.map((p) => ({
+		paths: algos.map((p) => ({
 			params: {
 				slug: p.replace(/\.mdx/, ''),
 			},
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-	const post = await getFileBySlug('blog', params.slug);
+	const algo = await getFileBySlug('algorithms', params.slug);
 
-	return { props: post };
+	return { props: algo };
 }

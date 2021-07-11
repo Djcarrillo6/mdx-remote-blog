@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { useColorMode, Heading, Text, Flex, Box, Link } from '@chakra-ui/react';
 import { parseISO, format } from 'date-fns';
 
-const BlogPost = ({ title, publishedAt, summary, slug }) => {
+const AlgoPost = ({ title, publishedAt, summary, slug }) => {
 	const { colorMode } = useColorMode();
 	const secondaryTextColor = {
 		light: 'gray.700',
@@ -11,7 +11,7 @@ const BlogPost = ({ title, publishedAt, summary, slug }) => {
 	};
 
 	return (
-		<NextLink href={`blog/${slug}`} passHref>
+		<NextLink href={`algorithms/${slug}`} passHref>
 			<Link w='100%' _hover={{ textDecoration: 'none' }}>
 				<Box mb={10} display='block' width='100%'>
 					<Flex
@@ -44,4 +44,4 @@ const BlogPost = ({ title, publishedAt, summary, slug }) => {
 	);
 };
 
-export default BlogPost;
+export default AlgoPost;
