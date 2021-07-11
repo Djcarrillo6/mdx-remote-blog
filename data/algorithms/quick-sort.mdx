@@ -1,0 +1,83 @@
+---
+title: 'The Classic Quick Sort Algorithm Breakdown'
+publishedAt: '2021-07-11'
+summary: 'Detailed guide and analysis of the classic quicksort algorithm.'
+---
+
+# The Classic Quick Sort Algorithm Challenge
+
+### What is Quicksort?
+Like many other sorting algorithms, the classic *quicksort* algorithm is a divide and conquer styled algorithm. It works by splitting the array into two parts, then recursively sorting those two parts. Very similiar to *mergesort* it exploits the fact that an array of 0 or 1 elements is already sorted. The key to solving this algorithm is by selecting one element, typically called the `pivot` and finding the `index` where the pivot should end up in the sorted array. Once the pivot is positioned appropriately, *quicksort* can be applied on either side of the `pivot`.
+
+### Keys To The Pivot Helper Function
+- In order to implement `quickSort`, it's useful to first implement a function tha will be responsible for arranging elements in an array on either side of a pivot.
+- Given an array, this helper function should designate an element as the `pivot`.
+- It should then rearrange elements in the array so that all values `greater than pivot` are moved to the `right of the pivot`.
+- The order of elements on either side of the `pivot` DOESN'T matter!
+- The helper should do this IN PLACE, meaning it should NOT create a new array.
+- When complete, the helper should return the index of the `pivot`.
+
+
+### Picking A Pivot
+- The runtime of `quickSort` depends in part on how the `pivot` is selected. Ideally, the `pivot` should be choosen to that it's roughly the median value in the data set that you are sorting.
+
+*For this example, we'll choose the `pivot` to be the 1st element!*
+
+
+### The Psuedo Code For The Pivot Helper Function
+- The `pivot` helper function should be implemented as follows:
+  - The `pivot` should be the 1st element in the array.
+  - The paramters that are accepted by the `pivot` helper function should be the array, a start index, and an end index(these can default to 0 and the array length minus 1, respectively).
+  - Grab the `pivot` from the start of the array.
+  - Store the current `pivot` index in a variable in order to track where the "pivots" should end up.
+  - Loop through the array from the `start` index to the `end` index.
+    - If the `pivot` is greater than the current element, increment the `pivot` index variable, and then swap the current element with the element at the `pivot` index.
+    - Swap the starting element(i.e the `pivot`) with the `pivot` index.
+
+**The Code**
+```javascript:algorithms/quickSort.js
+    function pivot(arr, start = 0, end = arr.length - 1) {
+      // ES2015 swap function
+      const swap = (arr, idx1, idx2) => {
+        [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
+      };
+
+      // We are assuming the pivot is always the first element.
+      let pivot = arr[start];
+      let swapIdx = start;
+
+      for (let i = start + 1; i <= end; i++) {
+        if (pivot > arr[i]) {
+          swapIdx++;
+          swap(arr, swapIdx, i);
+        }
+      }
+
+      // First swap the pivot with the element at the swap index.
+      swap(arr, start, swapIdx);
+      return swapIdx;
+    }
+```
+
+
+### The Psuedo Code For quickSort
+- The `quickSort` function should be implemented as follows:
+  - Call the `pivot` helper function on the array.
+  - When the helper returns the `pivot` index, recursively call the `pivot` helper function on the subarray to the left of that index, and the subarray to the right of the index.
+  *Our base case occurs when a subarray with less than 2 elements is found!*
+
+**The Code**
+```javascript:algorithms/quickSort.js
+    function quickSort(arr, left = 0, right = arr.length - 1) {
+      if (left < right) {
+        let pivotIndex = pivot(arr, left, right);
+        // left
+        quickSort(arr, left, pivotIndex - 1);
+        // right
+        quickSort(arr, pivotIndex + 1, right);
+      }
+      return arr;
+    }
+```
+
+***Thanks for reading!***
